@@ -1,0 +1,37 @@
+<resources>
+
+    <string name="app_name">Conversor de Arquivos</string>
+
+    <string name="confirma_arq">
+        Arquivo selecionado!
+    </string>
+
+    <string name="btn_converter">
+        Converter
+    </string>
+
+    <string name="convertendo">
+        Convertendo arquivo...
+    </string>
+
+    <string name="nao_arq">
+        Escolha arquivo primeiro!
+    </string>
+
+    <string name="arq_convertido">
+        Arquivo onvertido com sucesso!
+    </string>
+
+    <string name="erro">
+        Erro ao converter
+    </string>
+
+    <string name="png_salvo">
+        imagem_convertida.png
+    </string>
+
+    <string name="jpeg_salvo">
+        imagem_convertida.jpeg
+    </string>
+
+</resources>
