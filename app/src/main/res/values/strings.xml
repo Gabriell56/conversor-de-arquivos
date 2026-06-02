@@ -2,6 +2,14 @@
 
     <string name="app_name">Conversor de Arquivos</string>
 
+    <string name="selecione_arq">
+        Selecione arquivo
+    </string>
+
+    <string name="nenhum_arq">
+        Nenhum arquivo selecionado
+    </string>
+
     <string name="confirma_arq">
         Arquivo selecionado!
     </string>
@@ -11,7 +19,7 @@
     </string>
 
     <string name="convertendo">
-        Convertendo arquivo...
+        Convertendo arquivo
     </string>
 
     <string name="nao_arq">
@@ -19,7 +27,7 @@
     </string>
 
     <string name="arq_convertido">
-        Arquivo onvertido com sucesso!
+        Arquivo convertido com sucesso!
     </string>
 
     <string name="erro">
@@ -34,4 +42,7 @@
         imagem_convertida.jpeg
     </string>
 
+    <string name="teste">
+        teste
+    </string>
 </resources>

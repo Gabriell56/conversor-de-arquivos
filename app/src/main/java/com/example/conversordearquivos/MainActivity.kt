@@ -8,12 +8,38 @@ import android.net.Uri
 import androidx.activity.result.contract.ActivityResultContracts
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.widget.ArrayAdapter
 import java.io.File
 import java.io.FileOutputStream
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
+    private fun obterNomeArquivo(uri: Uri): String {
+        var nome = "Arquivo selecionado"
+
+        contentResolver.query(
+            uri,
+            null,
+            null,
+            null,
+            null
+        )?.use { cursor ->
+
+            val indice = cursor.getColumnIndex(
+                android.provider.OpenableColumns.DISPLAY_NAME
+            )
+
+            if (cursor.moveToFirst() && indice >= 0) {
+
+                nome = cursor.getString(indice)
+            }
+
+        }
+
+        return nome
+    }
 
     private var imagemSelecionada: Uri? = null
 
@@ -25,6 +51,10 @@ class MainActivity : AppCompatActivity() {
             if (uri != null) {
 
                 imagemSelecionada = uri
+
+                binding.imgPreview.setImageURI(uri)
+
+                binding.txtArquivo.text = obterNomeArquivo(uri)
 
                 Toast.makeText(
                     this,
@@ -45,11 +75,21 @@ class MainActivity : AppCompatActivity() {
             selecionarImagem.launch("image/*")
         }
 
-        binding.btnConverterPNG.setOnClickListener {
+        binding.btnConverter.setOnClickListener {
+
+            val formatoSelecionado = binding.spinnerFormato.selectedItem.toString()
 
             if (imagemSelecionada != null) {
 
-                converterParaPNG()
+                if (formatoSelecionado == "PNG") {
+
+                    converterParaPNG()
+
+                } else if (formatoSelecionado == "JPEG"){
+
+                    converterParaJPEG()
+
+                }
 
             } else {
 
@@ -61,21 +101,22 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.btnConverterJPEG.setOnClickListener {
+        val formatos = arrayOf(
+            "PNG",
+            "JPEG"
+        )
 
-            if (imagemSelecionada != null) {
+        val adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item,
+            formatos
+        )
 
-                converterParaJPEG()
+        adapter.setDropDownViewResource(
+            android.R.layout.simple_spinner_dropdown_item
+        )
 
-            } else {
-
-                Toast.makeText(
-                    this,
-                    getString(R.string.nao_arq),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
+        binding.spinnerFormato.adapter = adapter
     }
 
     private fun converterParaPNG() {
