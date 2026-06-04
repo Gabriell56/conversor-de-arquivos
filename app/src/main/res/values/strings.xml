@@ -42,6 +42,14 @@
         Salvo em: %1$s
     </string>
 
+    <string name="ja_png">
+        Arquivo já está em PNG
+    </string>
+
+    <string name="ja_jpeg">
+        Arquivo já está em JPEG
+    </string>
+
     <string name="teste">
         teste
     </string>

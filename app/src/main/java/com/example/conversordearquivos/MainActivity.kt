@@ -79,6 +79,51 @@ class MainActivity : AppCompatActivity() {
 
             val formatoSelecionado = binding.spinnerFormato.selectedItem.toString()
 
+            val nomeArquivoOriginal = obterNomeArquivo(imagemSelecionada!!)
+
+            if (
+                nomeArquivoOriginal.endsWith(
+                    ".png",
+                    ignoreCase = true
+                )
+                &&
+                formatoSelecionado == "PNG"
+            ) {
+
+                Toast.makeText(
+                    this,
+                    getString(R.string.ja_png),
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                return@setOnClickListener
+            }
+
+            if(
+                (
+                        nomeArquivoOriginal.endsWith(
+                            ".jpg",
+                            ignoreCase = true
+                        )
+                        ||
+                        nomeArquivoOriginal.endsWith(
+                            ".jpeg",
+                            ignoreCase = true
+                        )
+                )
+                &&
+                formatoSelecionado == "JPEG"
+            ) {
+
+                Toast.makeText(
+                    this,
+                    getString(R.string.ja_jpeg),
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                return@setOnClickListener
+            }
+
             if (imagemSelecionada != null) {
 
                 if (formatoSelecionado == "PNG") {
