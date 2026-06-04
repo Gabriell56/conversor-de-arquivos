@@ -34,12 +34,12 @@
         Erro ao converter
     </string>
 
-    <string name="png_salvo">
-        imagem_convertida.png
+    <string name="prefixo_arq">
+        imagem_convertida
     </string>
 
-    <string name="jpeg_salvo">
-        imagem_convertida.jpeg
+    <string name="arquivo_salvo">
+        Salvo em: %1$s
     </string>
 
     <string name="teste">

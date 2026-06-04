@@ -83,12 +83,16 @@ class MainActivity : AppCompatActivity() {
 
                 if (formatoSelecionado == "PNG") {
 
-                    converterParaPNG()
+                    converter(
+                        Bitmap.CompressFormat.PNG,
+                        "png"
+                    )
+                } else if (formatoSelecionado == "JPEG") {
 
-                } else if (formatoSelecionado == "JPEG"){
-
-                    converterParaJPEG()
-
+                    converter(
+                        Bitmap.CompressFormat.JPEG,
+                        "jpeg"
+                    )
                 }
 
             } else {
@@ -108,18 +112,21 @@ class MainActivity : AppCompatActivity() {
 
         val adapter = ArrayAdapter(
             this,
-            android.R.layout.simple_spinner_item,
+            R.layout.spinner_item,
             formatos
         )
 
         adapter.setDropDownViewResource(
-            android.R.layout.simple_spinner_dropdown_item
+            R.layout.spinner_dropdown_item
         )
 
         binding.spinnerFormato.adapter = adapter
     }
 
-    private fun converterParaPNG() {
+    private fun converter(
+        formato: Bitmap.CompressFormat,
+        extensao: String
+    ) {
 
         try {
 
@@ -140,15 +147,19 @@ class MainActivity : AppCompatActivity() {
 
             inputStream?.close()
 
+            val timestamp = System.currentTimeMillis()
+
+            val nomeArquivo = "${getString(R.string.prefixo_arq)}_$timestamp.$extensao"
+
             val arquivoSaida = File(
                 getExternalFilesDir(null),
-                getString(R.string.png_salvo) //nao sei se pode
+                nomeArquivo //nao sei se pode
             )
 
             val outputStream = FileOutputStream(arquivoSaida)
 
             bitmap.compress(
-                Bitmap.CompressFormat.PNG,
+                formato,
                 100,
                 outputStream
             )
@@ -158,63 +169,7 @@ class MainActivity : AppCompatActivity() {
 
             Toast.makeText(
                 this,
-                getString(R.string.arq_convertido),
-                Toast.LENGTH_LONG
-            ).show()
-
-        } catch (e: Exception) {
-
-            Toast.makeText(
-                this,
-                getString(R.string.erro),
-                Toast.LENGTH_SHORT
-            ).show()
-
-            e.printStackTrace()
-        }
-
-    }
-
-    private fun converterParaJPEG() {
-
-        try{
-
-            if (imagemSelecionada == null) {
-
-                Toast.makeText(
-                    this,
-                    getString(R.string.nao_arq),
-                    Toast.LENGTH_SHORT
-                ).show()
-
-                return
-            }
-
-            val inputStream = contentResolver.openInputStream(imagemSelecionada!!)
-
-            val bitmap = BitmapFactory.decodeStream(inputStream)
-
-            inputStream?.close()
-
-            val arquivoSaida = File(
-                getExternalFilesDir(null),
-                getString(R.string.jpeg_salvo) //nao sei se pode
-            )
-
-            val outputStream = FileOutputStream(arquivoSaida)
-
-            bitmap.compress(
-                Bitmap.CompressFormat.JPEG,
-                100,
-                outputStream
-            )
-
-            outputStream.flush()
-            outputStream.close()
-
-            Toast.makeText(
-                this,
-                getString(R.string.arq_convertido),
+                getString(R.string.arquivo_salvo, arquivoSaida.name),
                 Toast.LENGTH_LONG
             ).show()
 
