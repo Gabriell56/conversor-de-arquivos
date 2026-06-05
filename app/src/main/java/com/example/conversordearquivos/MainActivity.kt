@@ -128,6 +128,24 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            if (
+                nomeArquivoOriginal.endsWith(
+                    ".webp",
+                    ignoreCase = true
+                )
+                &&
+                formatoSelecionado == "WEBP"
+            ) {
+
+                Toast.makeText(
+                    this,
+                    getString(R.string.ja_webp),
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                return@setOnClickListener
+            }
+
             if (imagemSelecionada != null) {
 
                 if (formatoSelecionado == "PNG") {

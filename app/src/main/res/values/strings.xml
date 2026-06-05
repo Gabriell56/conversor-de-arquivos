@@ -50,6 +50,10 @@
         Arquivo já está em JPEG
     </string>
 
+    <string name="ja_webp">
+        Arquivo já está em WEBP
+    </string>
+
     <string name="teste">
         teste
     </string>
