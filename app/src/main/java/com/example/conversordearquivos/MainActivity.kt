@@ -67,6 +67,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        supportActionBar?.hide()
+
+        window.statusBarColor = getColor(R.color.black)
+
         binding = ActivityMainBinding.inflate((layoutInflater))
 
         setContentView(binding.root)
@@ -138,6 +142,12 @@ class MainActivity : AppCompatActivity() {
                         Bitmap.CompressFormat.JPEG,
                         "jpeg"
                     )
+                } else if (formatoSelecionado == "WEBP") {
+
+                    converter(
+                        Bitmap.CompressFormat.WEBP,
+                        "webp"
+                    )
                 }
 
             } else {
@@ -152,7 +162,8 @@ class MainActivity : AppCompatActivity() {
 
         val formatos = arrayOf(
             "PNG",
-            "JPEG"
+            "JPEG",
+            "WEBP"
         )
 
         val adapter = ArrayAdapter(
@@ -196,9 +207,12 @@ class MainActivity : AppCompatActivity() {
 
             val nomeArquivo = "${getString(R.string.prefixo_arq)}_$timestamp.$extensao"
 
+            val pastaPictures = getExternalFilesDir(
+                android.os.Environment.DIRECTORY_PICTURES
+            )
             val arquivoSaida = File(
-                getExternalFilesDir(null),
-                nomeArquivo //nao sei se pode
+                pastaPictures,
+                nomeArquivo
             )
 
             val outputStream = FileOutputStream(arquivoSaida)
