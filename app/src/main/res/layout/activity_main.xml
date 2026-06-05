@@ -8,11 +8,28 @@
     android:padding="20dp"
     android:background="@color/verydark_gray">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btnMenu"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginStart="0dp"
+            android:background="@android:color/transparent"
+            android:src="@android:drawable/ic_menu_sort_by_size"
+            android:contentDescription="@string/menu"/>
+
+    </LinearLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:text="@string/app_name"
         android:textSize="28sp"
         android:textStyle="bold"
@@ -63,7 +80,7 @@
     <Spinner
         android:id="@+id/spinnerFormato"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:background="@color/dark_gray"/>
 

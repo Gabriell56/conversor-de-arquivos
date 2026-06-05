@@ -11,6 +11,9 @@ import android.graphics.BitmapFactory
 import android.widget.ArrayAdapter
 import java.io.File
 import java.io.FileOutputStream
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.PopupMenu
 
 class MainActivity : AppCompatActivity() {
 
@@ -64,6 +67,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    private val historico = mutableListOf<String>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -75,11 +80,71 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
+        binding.btnMenu.setOnClickListener {
+            val popup = PopupMenu(
+                this,
+                binding.btnMenu
+            )
+
+            popup.menu.add(getString(R.string.hist))
+            popup.menu.add(getString(R.string.limpa_hist))
+            popup.menu.add(getString(R.string.sobre))
+
+            popup.setOnMenuItemClickListener {
+
+                when (it.title) {
+
+                    "Histórico" -> {
+
+                        Toast.makeText(
+                            this,
+                            historico.joinToString("\n"),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+
+                    "Limpar Histórico" -> {
+                        historico.clear()
+
+                        Toast.makeText(
+                            this,
+                            getString(R.string.hist_limpo),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+
+                    "Sobre" -> {
+
+                        Toast.makeText(
+                            this,
+                            getString(R.string.sobre_info),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+
+                true
+            }
+
+            popup.show()
+        }
+
         binding.btnEscolher.setOnClickListener {
             selecionarImagem.launch("image/*")
         }
 
         binding.btnConverter.setOnClickListener {
+
+            if (imagemSelecionada == null) {
+
+                Toast.makeText(
+                    this,
+                    getString(R.string.nao_arq),
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                return@setOnClickListener
+            }
 
             val formatoSelecionado = binding.spinnerFormato.selectedItem.toString()
 
@@ -109,12 +174,12 @@ class MainActivity : AppCompatActivity() {
                             ".jpg",
                             ignoreCase = true
                         )
-                        ||
-                        nomeArquivoOriginal.endsWith(
-                            ".jpeg",
-                            ignoreCase = true
+                                ||
+                                nomeArquivoOriginal.endsWith(
+                                    ".jpeg",
+                                    ignoreCase = true
+                                )
                         )
-                )
                 &&
                 formatoSelecionado == "JPEG"
             ) {
@@ -146,36 +211,33 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if (imagemSelecionada != null) {
+            when(formatoSelecionado) {
 
-                if (formatoSelecionado == "PNG") {
+                "PNG" -> converter(
+                    Bitmap.CompressFormat.PNG,
+                    "png"
+                )
 
-                    converter(
-                        Bitmap.CompressFormat.PNG,
-                        "png"
-                    )
-                } else if (formatoSelecionado == "JPEG") {
+                "JPEG" -> converter(
+                    Bitmap.CompressFormat.JPEG,
+                    "jpeg"
+                )
 
-                    converter(
-                        Bitmap.CompressFormat.JPEG,
-                        "jpeg"
-                    )
-                } else if (formatoSelecionado == "WEBP") {
+                "WEBP" -> converter(
+                    Bitmap.CompressFormat.WEBP,
+                    "webp"
+                )
 
-                    converter(
-                        Bitmap.CompressFormat.WEBP,
-                        "webp"
-                    )
+                else -> {
+
+                    Toast.makeText(
+                        this,
+                        getString(R.string.f_invalido),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-
-            } else {
-
-                Toast.makeText(
-                    this,
-                    getString(R.string.nao_arq),
-                    Toast.LENGTH_SHORT
-                ).show()
             }
+
         }
 
         val formatos = arrayOf(
@@ -195,6 +257,52 @@ class MainActivity : AppCompatActivity() {
         )
 
         binding.spinnerFormato.adapter = adapter
+    }
+
+    override fun onCreateOptionsMenu(
+        menu: Menu?
+    ): Boolean {
+
+        menuInflater.inflate(
+            R.menu.historico_menu,
+            menu
+        )
+
+        return true
+    }
+
+    override fun onOptionsItemSelected(
+        item: MenuItem
+    ): Boolean {
+
+        when (item.itemId) {
+
+            R.id.menu_historico -> {
+
+                Toast.makeText(
+                    this,
+                    historico.joinToString("\n"),
+                    Toast.LENGTH_LONG
+                ).show()
+
+                return true
+            }
+
+            R.id.menu_limpar -> {
+
+                historico.clear()
+
+                Toast.makeText(
+                    this,
+                    getString(R.string.hist_limpo),
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                return true
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     private fun converter(
@@ -243,6 +351,8 @@ class MainActivity : AppCompatActivity() {
 
             outputStream.flush()
             outputStream.close()
+
+            historico.add(nomeArquivo)
 
             Toast.makeText(
                 this,
