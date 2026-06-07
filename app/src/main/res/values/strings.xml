@@ -8,6 +8,10 @@
         Menu
     </string>
 
+    <string name="voltar">
+        Voltar
+    </string>
+
     <string name="sobre_info">
         Conversor de Arquivos v1.0
     </string>

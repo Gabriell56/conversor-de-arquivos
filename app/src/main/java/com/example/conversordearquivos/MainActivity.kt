@@ -1,5 +1,6 @@
 package com.example.conversordearquivos
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -11,8 +12,6 @@ import android.graphics.BitmapFactory
 import android.widget.ArrayAdapter
 import java.io.File
 import java.io.FileOutputStream
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.PopupMenu
 
 class MainActivity : AppCompatActivity() {
@@ -67,8 +66,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-    private val historico = mutableListOf<String>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -96,15 +93,16 @@ class MainActivity : AppCompatActivity() {
 
                     "Histórico" -> {
 
-                        Toast.makeText(
+                        val intent = Intent(
                             this,
-                            historico.joinToString("\n"),
-                            Toast.LENGTH_LONG
-                        ).show()
+                            HistoricoActivity::class.java
+                        )
+
+                        startActivity(intent)
                     }
 
                     "Limpar Histórico" -> {
-                        historico.clear()
+                        HistoricoManager.historico.clear()
 
                         Toast.makeText(
                             this,
@@ -259,52 +257,6 @@ class MainActivity : AppCompatActivity() {
         binding.spinnerFormato.adapter = adapter
     }
 
-    override fun onCreateOptionsMenu(
-        menu: Menu?
-    ): Boolean {
-
-        menuInflater.inflate(
-            R.menu.historico_menu,
-            menu
-        )
-
-        return true
-    }
-
-    override fun onOptionsItemSelected(
-        item: MenuItem
-    ): Boolean {
-
-        when (item.itemId) {
-
-            R.id.menu_historico -> {
-
-                Toast.makeText(
-                    this,
-                    historico.joinToString("\n"),
-                    Toast.LENGTH_LONG
-                ).show()
-
-                return true
-            }
-
-            R.id.menu_limpar -> {
-
-                historico.clear()
-
-                Toast.makeText(
-                    this,
-                    getString(R.string.hist_limpo),
-                    Toast.LENGTH_SHORT
-                ).show()
-
-                return true
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
     private fun converter(
         formato: Bitmap.CompressFormat,
         extensao: String
@@ -352,7 +304,7 @@ class MainActivity : AppCompatActivity() {
             outputStream.flush()
             outputStream.close()
 
-            historico.add(nomeArquivo)
+            HistoricoManager.historico.add(nomeArquivo)
 
             Toast.makeText(
                 this,
